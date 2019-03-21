@@ -1,0 +1,40 @@
+{
+  "name": "preloader-dom",
+  "version": "1.0.0",
+  "description": "preloader js",
+  "main": "index.js",
+  "repository": "https://github.com/Neiasut/preloader-dom",
+  "author": "neiasut <kerlaeeda@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/preset-env": "^7.4.1",
+    "@babel/preset-typescript": "^7.3.3",
+    "@typescript-eslint/eslint-plugin": "^1.5.0",
+    "@typescript-eslint/parser": "^1.5.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.5",
+    "clean-webpack-plugin": "^2.0.1",
+    "eslint": "^5.15.3",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "path": "^0.12.7",
+    "prettier": "^1.16.4",
+    "typescript": "^3.3.4000",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1",
+    "webpack-merge": "^4.2.1"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.4.0"
+  },
+  "scripts": {
+    "watch": "webpack-dev-server --config ./config/webpack/webpack.config.js --mode development --watch --inline --hot --devServer",
+    "build": "webpack --config ./config/webpack/webpack.config.js --mode production"
+  }
+}
