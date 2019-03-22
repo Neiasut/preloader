@@ -54,6 +54,7 @@ class PreloaderDom {
     this.configuration = PreloaderDom.createConfiguration(settings);
     this.root = element;
     this.root.classList.add(CLASSES.root);
+    this.addClassTheme();
   }
 
   public show(): void {
@@ -173,6 +174,27 @@ class PreloaderDom {
     if (typeof callback === 'function') {
       callback(this);
     }
+  }
+
+  protected addClassTheme(): void {
+    const theme = this.configuration.theme;
+    if (typeof theme === 'string') {
+      this.root.classList.add('preloader-theme-' + theme);
+    }
+  }
+
+  protected removeClassTheme(): void {
+    const theme = this.configuration.theme;
+    if (typeof theme === 'string') {
+      this.root.classList.remove('preloader-theme-' + theme);
+    }
+  }
+
+  public destructor(): void {
+    this.hide();
+    this.root.classList.remove(CLASSES.root);
+    this.removeClassTheme();
+    delete this.root['preloaderDom'];
   }
 
   public static loadImg(url: string): void {

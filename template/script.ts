@@ -14,6 +14,10 @@ setTimeout(() => {
   preloader.show();
 }, 2000);
 
+setTimeout(() => {
+  preloader.destructor();
+}, 6000);
+
 const preloaderDOM2 = document.getElementById('preloader2');
 const preloader2 = new PreloaderDom(preloaderDOM2, {
   imgPath
