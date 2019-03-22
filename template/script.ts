@@ -22,7 +22,10 @@ const preloaderDOM2 = document.getElementById('preloader2');
 const preloader2 = new PreloaderDom(preloaderDOM2, {
   imgPath
 });
-PreloaderDom.loadImg(imgPath);
+PreloaderDom.loadImg(imgPath).then(pathImg => {
+  console.log(`load img = "${pathImg}"`);
+});
+PreloaderDom.defaultImgPreloader = imgPath;
 
 setInterval(() => {
   preloader2.show();
@@ -34,7 +37,6 @@ setInterval(() => {
 
 const preloaderDOM3 = document.getElementById('preloader3');
 const preloader3 = new PreloaderDom(preloaderDOM3, {
-  imgPath,
   beforeCloseCallback: () => {
     console.log('close!');
   },

@@ -44,6 +44,7 @@ class PreloaderDom {
 
   public static themes: PreloaderDomThemes = themes;
   public static imagePaths: Set<string> = new Set();
+  public static defaultImgPreloader: string = DEFAULT_PATH;
 
   public constructor(element: Element, settings: PreloaderDomSettings) {
     const beforeInstance = element['preloaderDom'];
@@ -123,10 +124,14 @@ class PreloaderDom {
 
   public getPathImage(): string {
     const { imgPath } = this.configuration;
-    if (imgPath === DEFAULT_PATH) {
-      return defaultPreloaderDomImage();
+    let path = imgPath;
+    if (typeof imgPath !== 'string') {
+      path =
+        PreloaderDom.defaultImgPreloader !== DEFAULT_PATH
+          ? PreloaderDom.defaultImgPreloader
+          : defaultPreloaderDomImage();
     }
-    return imgPath;
+    return path;
   }
 
   public saveListener(
@@ -197,23 +202,28 @@ class PreloaderDom {
     delete this.root['preloaderDom'];
   }
 
-  public static loadImg(url: string): void {
-    if (!this.imagePaths.has(url)) {
-      const img = new Image();
-      img.src = url;
-      img.onload = () => {
-        img.style.height = '0px';
-        img.style.width = '0px';
-        document.body.appendChild(img);
-        this.imagePaths.add(url);
-        setTimeout(() => {
-          document.body.removeChild(img);
-        }, 100);
-      };
-      img.onerror = () => {
-        new Error(`Could not load image with path: "${url}"`);
-      };
-    }
+  public static loadImg(url: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (!this.imagePaths.has(url)) {
+        const img = new Image();
+        img.src = url;
+        img.onload = () => {
+          img.style.height = '0px';
+          img.style.width = '0px';
+          document.body.appendChild(img);
+          this.imagePaths.add(url);
+          setTimeout(() => {
+            document.body.removeChild(img);
+            resolve(url);
+          }, 100);
+        };
+        img.onerror = () => {
+          reject(new Error(`Could not load image with path: "${url}"`));
+        };
+      } else {
+        resolve(url);
+      }
+    });
   }
 
   protected static createConfiguration(
@@ -231,8 +241,7 @@ class PreloaderDom {
   public static defaultSettings(): PreloaderDomSettings {
     return {
       constructorMessageError: defaultConstructorMessageError,
-      destructorMessageError: defaultDestructorMessageError,
-      imgPath: DEFAULT_PATH
+      destructorMessageError: defaultDestructorMessageError
     };
   }
 }
